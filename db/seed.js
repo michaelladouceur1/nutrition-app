@@ -1,5 +1,5 @@
 // LOCAL IMPORT
-const {client} = require('./index')
+const {client} = require('./client')
 
 async function dropMainTables() {
     try {
@@ -50,6 +50,17 @@ async function createMainTables() {
                 tag VARCHAR(255) UNIQUE NOT NULL,
                 ingredient_ref INTEGER DEFAULT 0,
                 recipe_ref INTEGER DEFAULT 0
+            )
+        `)
+
+        // HEALTH PROFILE TABLE
+        console.log('Creating health-profile table...')
+        await client.query(`
+            CREATE TABLE health-profile (
+                id SERIAL PRIMARY KEY,
+                "userid" INTEGER REFERENCES users(id),
+                current_weight FLOAT,
+                target_weight FLOAT,
             )
         `)
     } catch (error) {
